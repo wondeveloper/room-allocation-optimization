@@ -46,7 +46,7 @@ public class RoomAllocationServiceTest {
 
 	@BeforeAll
 	public static void setUp() {
-		InputStream inputStreamForValidInput = Objects.requireNonNull(RoomAllocationServiceTest.class.getClassLoader().getResourceAsStream("input.json"));
+		InputStream inputStreamForValidInput = Objects.requireNonNull(RoomAllocationServiceTest.class.getClassLoader().getResourceAsStream("ValidInput.json"));
 		InputStream inputStreamForInvalidInput = Objects.requireNonNull(RoomAllocationServiceTest.class.getClassLoader().getResourceAsStream("invalidInput.json"));
 		try {
 			validPrices = mapper.readValue(inputStreamForValidInput, new TypeReference<>() {});
