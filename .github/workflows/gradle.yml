@@ -36,13 +36,13 @@ jobs:
     - name: Build with Gradle Wrapper
       run: ./gradlew build
 
-    - name: Make scripts executable
-      run: |
-        chmod +x gradlew
-        chmod +x run.sh
+    # - name: Make scripts executable
+    #   run: |
+    #     chmod +x gradlew
+    #     chmod +x run.sh
     
-    - name: Run application script
-      run: ./run.sh  
+    # - name: Run application script
+    #   run: ./run.sh  
 
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
