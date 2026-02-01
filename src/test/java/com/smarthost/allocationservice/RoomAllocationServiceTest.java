@@ -1,5 +1,6 @@
 package com.smarthost.allocationservice;
 
+import com.smarthost.allocationservice.config.constant.Constants;
 import com.smarthost.allocationservice.config.dto.RoomQueryRequest;
 import com.smarthost.allocationservice.config.dto.RoomQueryResponse;
 import org.junit.jupiter.api.Assertions;
@@ -9,17 +10,13 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-
 import java.math.BigDecimal;
 import java.util.stream.Stream;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
@@ -27,16 +24,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("integration")
 public class RoomAllocationServiceTest extends BaseTest{
 
-	@Autowired
-	private MockMvc mockMvc;
+	private final MockMvc mockMvc;
 
+    public RoomAllocationServiceTest(@Autowired MockMvc mockMvc) {
+        this.mockMvc = mockMvc;
+    }
 
-	@ParameterizedTest
-	@MethodSource("testData")
+    @ParameterizedTest
+	@MethodSource("expectedResultTestData")
 	public void testValidPrices(Long premiumRooms, Long economyRooms, RoomQueryResponse expected) throws Exception {
         Assertions.assertFalse(validPrices.isEmpty());
 		var requestBody = new RoomQueryRequest(premiumRooms,economyRooms, validPrices);
-		mockMvc.perform(post("/api/v1/rooms/occupancy")
+		mockMvc.perform(post(Constants.ROOMS_API.concat(Constants.POST_OCCUPANCY))
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(mapper.writeValueAsString(requestBody))
 		)
@@ -55,7 +54,7 @@ public class RoomAllocationServiceTest extends BaseTest{
 	public void testInvalidPrices() throws Exception {
 		Assertions.assertFalse(invalidPrices.isEmpty());
 		var requestBody = new RoomQueryRequest(3L,3L, invalidPrices);
-		mockMvc.perform(post("/api/v1/rooms/occupancy")
+		mockMvc.perform(post(Constants.ROOMS_API.concat(Constants.POST_OCCUPANCY))
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(mapper.writeValueAsString(requestBody))
 				)
@@ -63,7 +62,7 @@ public class RoomAllocationServiceTest extends BaseTest{
 				.andExpect(status().is4xxClientError());
 	}
 
-	private static Stream<Arguments> testData(){
+	private static Stream<Arguments> expectedResultTestData(){
 		return Stream.of(
 				Arguments.of(3L,3L,new RoomQueryResponse(3L,new BigDecimal(738),
 						3L,new BigDecimal("167.99"))),
