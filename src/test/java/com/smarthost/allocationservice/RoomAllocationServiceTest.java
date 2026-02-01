@@ -32,7 +32,7 @@ public class RoomAllocationServiceTest extends BaseTest{
 
     @ParameterizedTest
 	@MethodSource("expectedResultTestData")
-	public void testValidPrices(Long premiumRooms, Long economyRooms, RoomQueryResponse expected) throws Exception {
+	public void testValidPrices(int premiumRooms, int economyRooms, RoomQueryResponse expected) throws Exception {
         Assertions.assertFalse(validPrices.isEmpty());
 		var requestBody = new RoomQueryRequest(premiumRooms,economyRooms, validPrices);
 		mockMvc.perform(post(Constants.ROOMS_API.concat(Constants.POST_OCCUPANCY))
@@ -53,7 +53,7 @@ public class RoomAllocationServiceTest extends BaseTest{
 	@Test
 	public void testInvalidPrices() throws Exception {
 		Assertions.assertFalse(invalidPrices.isEmpty());
-		var requestBody = new RoomQueryRequest(3L,3L, invalidPrices);
+		var requestBody = new RoomQueryRequest(3,3, invalidPrices);
 		mockMvc.perform(post(Constants.ROOMS_API.concat(Constants.POST_OCCUPANCY))
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(mapper.writeValueAsString(requestBody))
@@ -64,12 +64,12 @@ public class RoomAllocationServiceTest extends BaseTest{
 
 	private static Stream<Arguments> expectedResultTestData(){
 		return Stream.of(
-				Arguments.of(3L,3L,new RoomQueryResponse(3L,new BigDecimal(738),
-						3L,new BigDecimal("167.99"))),
-				Arguments.of(7L,5L,new RoomQueryResponse(6L,new BigDecimal(1054),
-						4L,new BigDecimal("189.99"))),
-				Arguments.of(2L,7L,new RoomQueryResponse(2L,new BigDecimal(583),
-						4L,new BigDecimal("189.99")))
+				Arguments.of(3,3,new RoomQueryResponse(3,new BigDecimal(738),
+						3,new BigDecimal("167.99"))),
+				Arguments.of(7,5,new RoomQueryResponse(6,new BigDecimal(1054),
+						4,new BigDecimal("189.99"))),
+				Arguments.of(2,7,new RoomQueryResponse(2,new BigDecimal(583),
+						4,new BigDecimal("189.99")))
 		);
 	}
 }

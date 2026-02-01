@@ -5,6 +5,6 @@ import lombok.Builder;
 import java.math.BigDecimal;
 
 @Builder
-public record RoomQueryResponse(Long usagePremium, BigDecimal revenuePremium,
-                                Long usageEconomy, BigDecimal revenueEconomy) {
+public record RoomQueryResponse(int usagePremium, BigDecimal revenuePremium,
+                                int usageEconomy, BigDecimal revenueEconomy) {
 }

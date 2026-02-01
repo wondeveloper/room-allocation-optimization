@@ -3,13 +3,13 @@ package com.smarthost.allocationservice.config.dto;
 import java.math.BigDecimal;
 
 public record RoomOccupancyHolder(
-        Long totalPremiumRooms,
-        Long totalEconomyRooms,
+        int totalPremiumRooms,
+        int totalEconomyRooms,
         BigDecimal totalPremiumRevenue,
         BigDecimal totalEconomyRevenue
 ) {
 
-    public static RoomOccupancyHolder of(Long premiumRooms, Long economyRooms) {
+    public static RoomOccupancyHolder of(int premiumRooms, int economyRooms) {
         return new RoomOccupancyHolder(
                 premiumRooms,
                 economyRooms,

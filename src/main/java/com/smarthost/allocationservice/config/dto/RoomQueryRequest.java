@@ -13,11 +13,11 @@ public record RoomQueryRequest (
 
     @NotNull
     @PositiveOrZero
-    Long premiumRooms,
+    int premiumRooms,
 
     @NotNull
     @PositiveOrZero
-    Long economyRooms,
+    int economyRooms,
 
     @NotEmpty List<@NotNull @PositiveOrZero BigDecimal> potentialGuests){
 }

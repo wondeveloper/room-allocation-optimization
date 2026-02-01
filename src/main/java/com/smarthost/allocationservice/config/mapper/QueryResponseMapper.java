@@ -5,8 +5,8 @@ import com.smarthost.allocationservice.config.dto.RoomQueryResponse;
 
 public class QueryResponseMapper {
 
-    public static RoomQueryResponse fromRoomOccupancyHolder(Long premiumRooms,
-                                                            Long economyRooms,
+    public static RoomQueryResponse fromRoomOccupancyHolder(int premiumRooms,
+                                                            int economyRooms,
                                                             RoomOccupancyHolder roomOccupancyHolder){
         return RoomQueryResponse.builder()
                 .usagePremium(premiumRooms - roomOccupancyHolder.totalPremiumRooms())
