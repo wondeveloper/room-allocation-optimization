@@ -12,7 +12,7 @@ public class PremiumRoomAllocator {
     private static final Logger logger = LoggerFactory.getLogger(PremiumRoomAllocator.class);
 
     public static void allocatePremium(RoomOccupancyHolder roomOccupancyHolder, PriorityQueue<BigDecimal> demand){
-        logger.info("Premium room allocation started");
+        logger.debug("Premium room allocation started");
         Long totalPremiumRoomsRemaining = roomOccupancyHolder.getTotalPremiumRooms();
         while (totalPremiumRoomsRemaining > 0 && !demand.isEmpty()){
             roomOccupancyHolder.decrementPremiumRooms();

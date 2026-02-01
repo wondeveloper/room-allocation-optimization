@@ -15,6 +15,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+/**
+ * Returns ResponseEntity<ProblemDetail> as a more generic way of handling validation
+ * irrespective of a type of client/team and long-term contract validity.
+ * For a single client, we can return a ResponseEntity<ErrorResponse>
+ */
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
