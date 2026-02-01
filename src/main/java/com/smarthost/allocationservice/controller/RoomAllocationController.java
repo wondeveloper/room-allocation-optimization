@@ -5,6 +5,8 @@ import com.smarthost.allocationservice.config.dto.RoomQueryRequest;
 import com.smarthost.allocationservice.config.dto.RoomQueryResponse;
 import com.smarthost.allocationservice.service.RoomAllocationServiceImpl;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +17,12 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping(Constants.ROOMS_API)
+@AllArgsConstructor
 public class RoomAllocationController {
 
     private static final Logger logger = LoggerFactory.getLogger(RoomAllocationController.class);
 
-    @Autowired
     private RoomAllocationServiceImpl roomAllocationService;
-
-    @GetMapping("/")
-    public ResponseEntity<String> sayHello(){
-        return ResponseEntity.ok("Hello");
-    }
 
     @PostMapping(value = Constants.POST_OCCUPANCY, produces = "application/json")
     public ResponseEntity<RoomQueryResponse> checkOccupancy(@Valid @RequestBody RoomQueryRequest request){
