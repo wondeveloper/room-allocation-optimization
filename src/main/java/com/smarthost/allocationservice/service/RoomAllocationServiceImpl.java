@@ -29,19 +29,19 @@ public non-sealed class RoomAllocationServiceImpl implements RoomAllocationServi
                 .collect(Collectors.groupingBy(quote -> quote.compareTo(new BigDecimal(premiumAmountThreshold)) >= 0 ? RoomType.PREMIUM : RoomType.ECONOMY,
                         Collectors.toCollection(() ->new PriorityQueue<>(Collections.reverseOrder()))));
 
-        final RoomOccupancyHolder roomOccupancyHolder = new RoomOccupancyHolder(request.premiumRooms(),request.economyRooms());
+        final RoomOccupancyHolder roomOccupancyHolder = RoomOccupancyHolder.of(request.premiumRooms(),request.economyRooms());
 
         //Premium room allocation
-        PremiumRoomAllocator.allocatePremium(roomOccupancyHolder, map.get(RoomType.PREMIUM));
+        RoomOccupancyHolder premiuimRoomOccupancyHolder = PremiumRoomAllocator.allocatePremium(roomOccupancyHolder, map.get(RoomType.PREMIUM));
 
         //Economy rooms allocation
-        EconomyRoomAllocator.allocateEconomy(roomOccupancyHolder,map.get(RoomType.ECONOMY));
+        RoomOccupancyHolder economyRoomOccupancyHolder = EconomyRoomAllocator.allocateEconomy(premiuimRoomOccupancyHolder,map.get(RoomType.ECONOMY));
 
         logger.info("Smart upgrade started");
         //Smart upgrade
-        PremiumRoomAllocator.allocatePremium(roomOccupancyHolder,map.get(RoomType.ECONOMY));
+        RoomOccupancyHolder premiumRoomSmartUpgradeOccupancyHolder = PremiumRoomAllocator.allocatePremium(economyRoomOccupancyHolder,map.get(RoomType.ECONOMY));
 
         logger.debug("Rooms allocation finished for current request");
-        return QueryResponseMapper.fromRoomOccupancyHolder(request.premiumRooms(), request.economyRooms(),roomOccupancyHolder);
+        return QueryResponseMapper.fromRoomOccupancyHolder(request.premiumRooms(), request.economyRooms(),premiumRoomSmartUpgradeOccupancyHolder);
     }
 }

@@ -9,10 +9,10 @@ public class QueryResponseMapper {
                                                             Long economyRooms,
                                                             RoomOccupancyHolder roomOccupancyHolder){
         return RoomQueryResponse.builder()
-                .usagePremium(premiumRooms - roomOccupancyHolder.getTotalPremiumRooms())
-                .usageEconomy(economyRooms - roomOccupancyHolder.getTotalEconomyRooms())
-                .revenueEconomy(roomOccupancyHolder.getTotalEconomyRevenue())
-                .revenuePremium(roomOccupancyHolder.getTotalPremiumRevenue())
+                .usagePremium(premiumRooms - roomOccupancyHolder.totalPremiumRooms())
+                .usageEconomy(economyRooms - roomOccupancyHolder.totalEconomyRooms())
+                .revenueEconomy(roomOccupancyHolder.totalEconomyRevenue())
+                .revenuePremium(roomOccupancyHolder.totalPremiumRevenue())
                 .build();
     }
 }
