@@ -35,7 +35,7 @@ public class RoomAllocationServiceTest extends BaseTest{
 	public void testValidPrices(int premiumRooms, int economyRooms, RoomQueryResponse expected) throws Exception {
         Assertions.assertFalse(validPrices.isEmpty());
 		var requestBody = new RoomQueryRequest(premiumRooms,economyRooms, validPrices);
-		mockMvc.perform(post(Constants.ROOMS_API.concat(Constants.POST_OCCUPANCY))
+		mockMvc.perform(post(Constants.POST_OCCUPANCY)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(mapper.writeValueAsString(requestBody))
 		)
@@ -54,7 +54,7 @@ public class RoomAllocationServiceTest extends BaseTest{
 	public void testInvalidPrices() throws Exception {
 		Assertions.assertFalse(invalidPrices.isEmpty());
 		var requestBody = new RoomQueryRequest(3,3, invalidPrices);
-		mockMvc.perform(post(Constants.ROOMS_API.concat(Constants.POST_OCCUPANCY))
+		mockMvc.perform(post(Constants.POST_OCCUPANCY)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(mapper.writeValueAsString(requestBody))
 				)

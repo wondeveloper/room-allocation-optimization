@@ -6,4 +6,5 @@ public class Constants {
     public static final String API_VERSION = "v1";
     public static final String ROOMS_API = "/api/v1/rooms";
     public static final String POST_OCCUPANCY= "/occupancy";
+    public static final String POST_OCCUPANCY_API = Constants.ROOMS_API.concat(Constants.POST_OCCUPANCY);
 }

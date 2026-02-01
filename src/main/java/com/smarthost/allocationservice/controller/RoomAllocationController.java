@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping(Constants.ROOMS_API)
 @AllArgsConstructor
 public class RoomAllocationController {
 
