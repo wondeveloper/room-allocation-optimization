@@ -6,10 +6,8 @@ import com.smarthost.allocationservice.config.dto.RoomQueryResponse;
 import com.smarthost.allocationservice.service.RoomAllocationServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
