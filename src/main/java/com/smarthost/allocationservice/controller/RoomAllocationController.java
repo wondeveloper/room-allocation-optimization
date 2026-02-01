@@ -1,5 +1,6 @@
 package com.smarthost.allocationservice.controller;
 
+import com.smarthost.allocationservice.config.constant.Constants;
 import com.smarthost.allocationservice.config.dto.RoomQueryRequest;
 import com.smarthost.allocationservice.config.dto.RoomQueryResponse;
 import com.smarthost.allocationservice.service.RoomAllocationServiceImpl;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/api/v1/rooms")
+@RequestMapping(Constants.ROOMS_API)
 public class RoomAllocationController {
 
     private static final Logger logger = LoggerFactory.getLogger(RoomAllocationController.class);
@@ -26,11 +27,11 @@ public class RoomAllocationController {
         return ResponseEntity.ok("Hello");
     }
 
-    @PostMapping(value = "/occupancy", produces = "application/json")
+    @PostMapping(value = Constants.POST_OCCUPANCY, produces = "application/json")
     public ResponseEntity<RoomQueryResponse> checkOccupancy(@Valid @RequestBody RoomQueryRequest request){
-        logger.info("Request received to allocate rooms and calculate revenue at {}", LocalDateTime.now());
+        logger.info("Request {} received to allocate rooms and calculate revenue at {}",request, LocalDateTime.now());
         RoomQueryResponse roomQueryResponse = roomAllocationService.allocateRooms(request);
-        logger.debug("Request completed at {}", LocalDateTime.now());
+        logger.debug("Request: {} completed at {} with response: {}", request, LocalDateTime.now(), roomQueryResponse);
         return ResponseEntity.ok(roomQueryResponse);
     }
 }

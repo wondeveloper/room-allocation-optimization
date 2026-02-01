@@ -11,7 +11,7 @@ public class EconomyRoomAllocator {
 
     private static final Logger logger = LoggerFactory.getLogger(EconomyRoomAllocator.class);
 
-    public static void allocateEconomy(RoomOccupancyHolder roomOccupancyHolder, PriorityQueue<BigDecimal> demand){
+    public static void allocateEconomy(final RoomOccupancyHolder roomOccupancyHolder, PriorityQueue<BigDecimal> demand){
         logger.debug("Economy room allocation started");
         Long totalEconomyRoomsRemaining = roomOccupancyHolder.getTotalEconomyRooms();
         while (totalEconomyRoomsRemaining > 0 && !demand.isEmpty()){
