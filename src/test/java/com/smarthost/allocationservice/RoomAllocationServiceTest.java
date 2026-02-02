@@ -16,6 +16,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -60,6 +63,42 @@ public class RoomAllocationServiceTest extends BaseTest{
 				)
 				.andExpect(status().isBadRequest())
 				.andExpect(status().is4xxClientError());
+	}
+
+	@Test
+	public void testValidPricesAllPremium() throws Exception {
+		Assertions.assertFalse(validPrices.isEmpty());
+		Predicate<BigDecimal> premiumRoomPredicate = room -> room.compareTo(BigDecimal.valueOf(100)) < 0;
+        List<BigDecimal> premiumRooms = new ArrayList<>(validPrices);
+		premiumRooms.removeIf(premiumRoomPredicate);
+
+		var requestBody = new RoomQueryRequest(6,3, premiumRooms);
+		mockMvc.perform(post(Constants.POST_OCCUPANCY)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(mapper.writeValueAsString(requestBody))
+				)
+				.andExpect(jsonPath("$.usagePremium").value(6))
+				.andExpect(jsonPath("$.usageEconomy").value(0))
+				.andExpect(jsonPath("$.revenuePremium").value(1054))
+				.andExpect(jsonPath("$.revenueEconomy").value(0));
+	}
+
+	@Test
+	public void testValidPricesAllEconomy() throws Exception {
+		Assertions.assertFalse(validPrices.isEmpty());
+		Predicate<BigDecimal> economyRoomPredicate = room -> room.compareTo(BigDecimal.valueOf(100)) >= 0;
+		List<BigDecimal> premiumRooms = new ArrayList<>(validPrices);
+		premiumRooms.removeIf(economyRoomPredicate);
+
+		var requestBody = new RoomQueryRequest(5,2, premiumRooms);
+		mockMvc.perform(post(Constants.POST_OCCUPANCY)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(mapper.writeValueAsString(requestBody))
+				)
+				.andExpect(jsonPath("$.usagePremium").value(2))
+				.andExpect(jsonPath("$.usageEconomy").value(2))
+				.andExpect(jsonPath("$.revenuePremium").value(45))
+				.andExpect(jsonPath("$.revenueEconomy").value(144.99));
 	}
 
 	private static Stream<Arguments> expectedResultTestData(){
