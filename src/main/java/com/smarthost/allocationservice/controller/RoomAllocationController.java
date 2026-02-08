@@ -21,6 +21,11 @@ public class RoomAllocationController {
 
     private RoomAllocationServiceImpl roomAllocationService;
 
+    @GetMapping
+    public ResponseEntity<String> sayHello(){
+        return ResponseEntity.ok("Hello Vivek");
+    }
+
     @PostMapping(value = Constants.POST_OCCUPANCY, produces = "application/json")
     public ResponseEntity<RoomQueryResponse> checkOccupancy(@Valid @RequestBody RoomQueryRequest request){
         logger.info("Request {} received to allocate rooms and calculate revenue at {}",request, LocalDateTime.now());
