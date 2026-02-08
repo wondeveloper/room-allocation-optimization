@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -38,6 +39,18 @@ public non-sealed class RoomAllocationServiceImpl implements RoomAllocationServi
         logger.info("Smart upgrade started");
         //Smart upgrade
         RoomOccupancyHolder premiumRoomSmartUpgradeOccupancyHolder = PremiumRoomAllocator.allocatePremium(economyRoomOccupancyHolder,roomTypePriorityQueueMap.get(RoomType.ECONOMY));
+
+
+        List<CompletableFuture<RoomOccupancyHolder>> futures = new ArrayList<>();
+        CompletableFuture<RoomOccupancyHolder> completableFuture = CompletableFuture.supplyAsync(() ->
+                new RoomOccupancyHolder(3,3, new BigDecimal(2), new BigDecimal(2)));
+
+        futures.add(completableFuture);
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+                .thenApply(v -> futures.stream()
+                        .map(CompletableFuture::join)
+                        .collect(Collectors.toList()));
+
 
         logger.debug("Rooms allocation finished for current request");
         return QueryResponseMapper.fromRoomOccupancyHolder(request.premiumRooms(), request.economyRooms(),premiumRoomSmartUpgradeOccupancyHolder);
